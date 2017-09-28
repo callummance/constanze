@@ -1,0 +1,12 @@
+{
+  "email": "test@example.com",
+  "apiKey": "keykeykeykeykeykeykeykey",
+  "updateTargets": [
+    {
+      "zoneName": "constanze.moe",
+      "hostnames": [
+        "kappa.constanze.moe"
+      ]
+    }
+  ]
+}
