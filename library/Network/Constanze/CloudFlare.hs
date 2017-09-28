@@ -1,7 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric     #-}
 
-module Network.Constanze.CloudFlare where
+module Network.Constanze.CloudFlare (runUpdate) where
 
 import Network.Wreq
 import Data.Aeson.Lens
