@@ -1,9 +1,13 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings    #-}
+{-# LANGUAGE DeriveDataTypeable   #-}
+{-# OPTIONS_GHC -fno-cse          #-}
 
 module Network.Constanze (main) where
 
 import Data.Aeson
 import qualified Data.ByteString.Lazy as BS
+
+import System.Console.CmdArgs
 
 import Network.Constanze.Ip
 import Network.Constanze.CloudFlare
@@ -28,13 +32,20 @@ instance FromJSON UpdateTarget where
               UpdateTarget <$> o .: "zoneName"
                            <*> o .: "hostnames"
 
-confFile :: String
-confFile = "/etc/constanze.json"
+data UserArgs = UserArgs{
+                  confLoc :: String
+                }
+                deriving (Show, Data, Typeable)
+
+defaultArgs :: UserArgs
+defaultArgs = UserArgs {confLoc = def &= opt ("/etc/constanze.json" :: String) &= name "conf" &= help "Path to configuration file" &= typFile}
+                &= summary "Constanze, CloudFlare updater extraordinaire!"
 
 main :: IO ()
 main
   = do
-    confString <- BS.readFile confFile
+    userArgs <- cmdArgs defaultArgs
+    confString <- BS.readFile $ confLoc userArgs
     let conf = decode confString
     case conf of
       Just c -> updateTargets (email c) (apiKey c) (updateTargetsList c)

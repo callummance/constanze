@@ -26,6 +26,7 @@ library:
   - base
   - aeson
   - bytestring
+  - cmdargs
   - dns
   - lens
   - lens-aeson
